@@ -408,6 +408,14 @@ Returns:
 
 Reference http://docs.libmemcached.org/memcached_cas.html#memcached_cas_by_key
 
+### memcached:set_encoding_key(encoding_key)
+Set the encoding key (currenty only AES is supported).
+
+Params:
+* encoding_key[string]
+
+Reference http://docs.libmemcached.org/libmemcached-1.0/memcached_set_encoding_key.html#memcached_set_encoding_key
+
 ### memcached.lib_version()
 Returns the libmemcached version.
 

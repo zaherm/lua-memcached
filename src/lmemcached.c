@@ -829,6 +829,20 @@ LUALIB_API int lmemcached_cas_by_key(lua_State *L) {
 }
 
 /***
+ * @function memcached:set_encoding_key(encoding_key)
+ * @desc Set the encoding key (currenty only AES is supported).
+ * @param encoding_key[string]
+ * @ref http://docs.libmemcached.org/libmemcached-1.0/memcached_set_encoding_key.html#memcached_set_encoding_key
+*/
+LUALIB_API int lmemcached_set_encoding_key(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  size_t string_length;
+  const char *string = lua_tolstring(L, 2, &string_length);
+  memcached_set_encoding_key(self->ptr, string, string_length);
+  return 0;
+}
+
+/***
  * @function memcached.lib_version()
  * @desc Returns the libmemcached version.
  * @return version[string] - string representation of the libmemcached version.
