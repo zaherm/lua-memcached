@@ -58,6 +58,8 @@ LUALIB_API int lmemcached_cas(lua_State *L);
 LUALIB_API int lmemcached_cas_by_key(lua_State *L);
 /* encryption */
 LUALIB_API int lmemcached_set_encoding_key(lua_State *L);
+/* quit */
+LUALIB_API int lmemcached_quit(lua_State *L);
 
 
 /* general */
@@ -105,6 +107,7 @@ static luaL_Reg lmemcached_methods[] = {
   { "cas", lmemcached_cas },
   { "cas_by_key", lmemcached_cas_by_key },
   { "set_encoding_key", lmemcached_set_encoding_key },
+  { "quit", lmemcached_quit },
   { "__gc", lmemcached_free },
   { "__index", lmemcached_index },
   { NULL, NULL }

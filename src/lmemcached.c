@@ -843,6 +843,17 @@ LUALIB_API int lmemcached_set_encoding_key(lua_State *L) {
 }
 
 /***
+ * @function memcached:quit()
+ * @desc Disconnect from all connected servers.
+ * @ref http://docs.libmemcached.org/memcached_quit.html
+*/
+LUALIB_API int lmemcached_quit(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  memcached_quit(self->ptr);
+  return 0;
+}
+
+/***
  * @function memcached.lib_version()
  * @desc Returns the libmemcached version.
  * @return version[string] - string representation of the libmemcached version.

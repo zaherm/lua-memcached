@@ -416,6 +416,11 @@ Params:
 
 Reference http://docs.libmemcached.org/libmemcached-1.0/memcached_set_encoding_key.html#memcached_set_encoding_key
 
+### memcached:quit()
+Disconnect from all connected servers.
+
+Reference http://docs.libmemcached.org/memcached_quit.html
+
 ### memcached.lib_version()
 Returns the libmemcached version.
 
