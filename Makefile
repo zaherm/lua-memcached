@@ -32,6 +32,7 @@ LIBNAME= memcached
 T= $(LIBNAME).so
 OBJS= src/l$(LIBNAME)_aux.o \
 			src/l$(LIBNAME)_result.o \
+			src/l$(LIBNAME)_consts.o \
 			src/l$(LIBNAME).o
 
 all: $T

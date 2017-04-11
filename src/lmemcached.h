@@ -3,7 +3,6 @@
 
 #include "lauxlib.h"
 #include "lua.h"
-#include "memcached.h"
 #include "lmemcached_aux.h"
 #include "lmemcached_consts.h"
 #include "lmemcached_result.h"
@@ -64,7 +63,9 @@ LUALIB_API int lmemcached_quit(lua_State *L);
 /* behavior */
 LUALIB_API int lmemcached_behavior_get(lua_State *L);
 LUALIB_API int lmemcached_behavior_set(lua_State *L);
-
+/* hash */
+LUALIB_API int lmemcached_generate_hash(lua_State *L);
+LUALIB_API int lmemcached_generate_hash_value(lua_State *L);
 /* general */
 LUALIB_API int lmemcached_lib_version(lua_State *L);
 LUALIB_API int lmemcached_check_configuration(lua_State *L);
@@ -74,6 +75,7 @@ static const luaL_Reg lmemcached_funcs[] = {
   { "create", lmemcached_create },
   { "lib_version", lmemcached_lib_version },
   { "check_configuration", lmemcached_check_configuration },
+  { "generate_hash_value", lmemcached_generate_hash_value },
   { NULL, NULL }
 };
 
@@ -113,6 +115,7 @@ static luaL_Reg lmemcached_methods[] = {
   { "quit", lmemcached_quit },
   { "behavior_get", lmemcached_behavior_get },
   { "behavior_set", lmemcached_behavior_set },
+  { "generate_hash", lmemcached_generate_hash },
   { "__gc", lmemcached_free },
   { "__index", lmemcached_index },
   { NULL, NULL }

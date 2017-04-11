@@ -421,6 +421,53 @@ Disconnect from all connected servers.
 
 Reference http://docs.libmemcached.org/memcached_quit.html
 
+### memcached:behavior_get(flag)
+Get behavior by flag.
+
+Params:
+* flag[integer] - Select from memcached.BEHAVIOR table
+
+Returns:
+* behavior[integer] - Behavior value
+
+Reference http://docs.libmemcached.org/memcached_behavior.html#memcached_behavior_get
+
+### memcached:behavior_set(flag, data)
+Set behavior value.
+
+Params:
+* flag[integer] - Select from memcached.BEHAVIOR table
+* data[integer] - Behavior data to set
+
+Returns:
+* ok[booelan]
+* rc[integer]
+
+Reference http://docs.libmemcached.org/memcached_behavior.html#memcached_behavior_set
+
+### memcached:generate_hash(key)
+Generate a hash based on the memcached instace hash settings.
+
+Params:
+* key[string] - Behavior data to set
+
+Returns:
+* hash[integer]
+
+Reference http://docs.libmemcached.org/memcached_hash.html#memcached_generate_hash
+
+### memcached.generate_hash_value(key, hash_algorithm)
+Generate a hash using a defined algorithm in the library.
+
+Params:
+* key[string] - Behavior data to set
+* hash_algorith[integer] - Hash algorithm (see memcached.HASH for list of algorithms)
+
+Returns:
+* hash[integer]
+
+Reference http://docs.libmemcached.org/memcached_hash.html#memcached_generate_hash_value
+
 ### memcached.lib_version()
 Returns the libmemcached version.
 

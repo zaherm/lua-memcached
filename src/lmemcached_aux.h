@@ -2,6 +2,7 @@
 #define LMEMCACHED_AUX_H
 #include <string.h>
 #include "lauxlib.h"
+#include "memcached.h"
 
 #if !defined LUA_VERSION_NUM || LUA_VERSION_NUM==501
 LUALIB_API void luaL_setfuncs(lua_State *L, const luaL_Reg *l, int nup);
@@ -13,3 +14,4 @@ void lmemcached_error(lua_State *L, const char *msg);
 void lmemcached_assert(lua_State *L, int cond, const char *msg);
 
 #endif
+

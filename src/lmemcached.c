@@ -887,6 +887,38 @@ LUALIB_API int lmemcached_behavior_set(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function memcached:generate_hash(key)
+ * @desc Generate a hash based on the memcached instace hash settings.
+ * @param key[string] - Behavior data to set
+ * @return hash[integer]
+ * @ref http://docs.libmemcached.org/memcached_hash.html#memcached_generate_hash
+*/
+LUALIB_API int lmemcached_generate_hash(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  size_t key_length;
+  const char *key = lua_tolstring(L, 2, &key_length);
+  uint32_t hash = memcached_generate_hash(self->ptr, key, key_length);
+  lua_pushinteger(L, hash);
+  return 1;
+}
+
+/***
+ * @function memcached.generate_hash_value(key, hash_algorithm)
+ * @desc Generate a hash using a defined algorithm in the library.
+ * @param key[string] - Behavior data to set
+ * @param hash_algorith[integer] - Hash algorithm (see memcached.HASH for list of algorithms)
+ * @return hash[integer]
+ * @ref http://docs.libmemcached.org/memcached_hash.html#memcached_generate_hash_value
+*/
+LUALIB_API int lmemcached_generate_hash_value(lua_State *L) {
+  size_t key_length;
+  const char *key = lua_tolstring(L, 1, &key_length);
+  memcached_hash_t hash_algorithm = luaL_checkinteger(L, 2);
+  uint32_t hash = memcached_generate_hash_value(key, key_length, hash_algorithm);
+  lua_pushinteger(L, hash);
+  return 1;
+}
 
 
 /***
@@ -935,14 +967,7 @@ LUALIB_API int luaopen_memcached(lua_State *L) {
   /* metatable functions */
   lmemcached_createmeta(L, LMEMCACHED_MT, lmemcached_methods);
   lmemcached_result_open(L);
-
-  lua_newtable(L);
-  int i = 0;
-  for(; lmemcached_const_behaviour[i].name != NULL; i++) {
-    lua_pushinteger(L, lmemcached_const_behaviour[i].flag);
-    lua_setfield(L, -2, lmemcached_const_behaviour[i].name);
-  }
-  lua_setfield(L, -2, "BEHAVIOR");
+  lmemcached_consts_open(L);
   lua_pushliteral(L, LMEMCACHED_VERSION);
   lua_setfield(L, -2, "_VERSION");
   lua_pushliteral(L, LMEMCACHED_COPYRIGHT);

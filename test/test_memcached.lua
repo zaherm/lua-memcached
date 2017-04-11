@@ -217,6 +217,13 @@ spec:describe("memcached:behavior_get(), memcached:behavior_set()", function(rep
   assert(data == 10)
 end)
 
+spec:describe("memcached:generate_hash(), memcached:generate_hash_value()", function(report)
+  local memc = memcached.new(option_string.. " --HASH=JENKINS")
+  local ok, res1, res2
+  local key = "test"
+  res = memcached.generate_hash_value(key, memcached.HASH.JENKINS)
+  assert(res == 1187193781)
+end)
 
 spec:run()
 
