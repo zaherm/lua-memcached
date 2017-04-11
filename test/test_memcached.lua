@@ -208,6 +208,16 @@ spec:describe("memcached:append(), memcached:append_by_key()", function(report)
   report("append by key", ok)
 end)
 
+spec:describe("memcached:behavior_get(), memcached:behavior_set()", function(report)
+  local memc = memcached.new(option_string)
+  local ok, res, data
+  ok, res = memc:behavior_set(memcached.BEHAVIOR.SND_TIMEOUT, 10)
+  assert(ok)
+  data = memc:behavior_get(memcached.BEHAVIOR.SND_TIMEOUT)
+  assert(data == 10)
+end)
+
+
 spec:run()
 
 

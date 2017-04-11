@@ -5,6 +5,7 @@
 #include "lua.h"
 #include "memcached.h"
 #include "lmemcached_aux.h"
+#include "lmemcached_consts.h"
 #include "lmemcached_result.h"
 
 #define LMEMCACHED_VERSION "lua-memcached 0.0.1"
@@ -60,7 +61,9 @@ LUALIB_API int lmemcached_cas_by_key(lua_State *L);
 LUALIB_API int lmemcached_set_encoding_key(lua_State *L);
 /* quit */
 LUALIB_API int lmemcached_quit(lua_State *L);
-
+/* behavior */
+LUALIB_API int lmemcached_behavior_get(lua_State *L);
+LUALIB_API int lmemcached_behavior_set(lua_State *L);
 
 /* general */
 LUALIB_API int lmemcached_lib_version(lua_State *L);
@@ -108,6 +111,8 @@ static luaL_Reg lmemcached_methods[] = {
   { "cas_by_key", lmemcached_cas_by_key },
   { "set_encoding_key", lmemcached_set_encoding_key },
   { "quit", lmemcached_quit },
+  { "behavior_get", lmemcached_behavior_get },
+  { "behavior_set", lmemcached_behavior_set },
   { "__gc", lmemcached_free },
   { "__index", lmemcached_index },
   { NULL, NULL }

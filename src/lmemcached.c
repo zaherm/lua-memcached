@@ -854,6 +854,42 @@ LUALIB_API int lmemcached_quit(lua_State *L) {
 }
 
 /***
+ * @function memcached:behavior_get(flag)
+ * @desc Get behavior by flag.
+ * @param flag[integer] - Select from memcached.BEHAVIOR table
+ * @return behavior[integer] - Behavior value
+ * @ref http://docs.libmemcached.org/memcached_behavior.html#memcached_behavior_get
+*/
+LUALIB_API int lmemcached_behavior_get(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  memcached_behavior_t flag = luaL_checkinteger(L, 2);
+  uint64_t behavior = memcached_behavior_get(self->ptr, flag);
+  lua_pushinteger(L, behavior);
+  return 1;
+}
+
+/***
+ * @function memcached:behavior_set(flag, data)
+ * @desc Set behavior value.
+ * @param flag[integer] - Select from memcached.BEHAVIOR table
+ * @param data[integer] - Behavior data to set
+ * @return ok[booelan]
+ * @return rc[integer]
+ * @ref http://docs.libmemcached.org/memcached_behavior.html#memcached_behavior_set
+*/
+LUALIB_API int lmemcached_behavior_set(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  memcached_behavior_t flag = luaL_checkinteger(L, 2);
+  uint64_t data = luaL_checkinteger(L, 3);
+  memcached_return_t rc = memcached_behavior_set(self->ptr, flag, data);
+  lua_pushboolean(L, memcached_success(rc));
+  lua_pushinteger(L, rc);
+  return 1;
+}
+
+
+
+/***
  * @function memcached.lib_version()
  * @desc Returns the libmemcached version.
  * @return version[string] - string representation of the libmemcached version.
@@ -900,6 +936,13 @@ LUALIB_API int luaopen_memcached(lua_State *L) {
   lmemcached_createmeta(L, LMEMCACHED_MT, lmemcached_methods);
   lmemcached_result_open(L);
 
+  lua_newtable(L);
+  int i = 0;
+  for(; lmemcached_const_behaviour[i].name != NULL; i++) {
+    lua_pushinteger(L, lmemcached_const_behaviour[i].flag);
+    lua_setfield(L, -2, lmemcached_const_behaviour[i].name);
+  }
+  lua_setfield(L, -2, "BEHAVIOR");
   lua_pushliteral(L, LMEMCACHED_VERSION);
   lua_setfield(L, -2, "_VERSION");
   lua_pushliteral(L, LMEMCACHED_COPYRIGHT);
