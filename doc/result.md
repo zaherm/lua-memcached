@@ -1,10 +1,10 @@
-### memcached
+### memcached.result
 
 ### result:key()
 Get the key value of the result
 
 Returns:
-* key[string] 
+* key[string]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html
 
@@ -12,7 +12,7 @@ Reference http://docs.libmemcached.org/memcached_result_st.html
 Get the value
 
 Returns:
-* value[string] 
+* value[string]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html
 
@@ -20,7 +20,7 @@ Reference http://docs.libmemcached.org/memcached_result_st.html
 Get the flags
 
 Returns:
-* flags[integer] 
+* flags[integer]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result_flags
 
@@ -28,7 +28,7 @@ Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result
 Get the cas
 
 Returns:
-* cas[integer] 
+* cas[integer]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result_cas
 
@@ -36,11 +36,11 @@ Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result
 Set result value
 
 Params:
-* new_value[string] 
+* new_value[string]
 
 Returns:
-* ok[booelan] 
-* rc[integer] 
+* ok[booelan]
+* rc[integer]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result_set_value
 
@@ -48,7 +48,7 @@ Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result
 Set result flags
 
 Params:
-* new_flags[integer] 
+* new_flags[integer]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result_set_flags
 
@@ -56,6 +56,6 @@ Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result
 Set result expiration
 
 Params:
-* new_expiration[integer] 
+* new_expiration[integer]
 
 Reference http://docs.libmemcached.org/memcached_result_st.html#memcached_result_set_expiration
