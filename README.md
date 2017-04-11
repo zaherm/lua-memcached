@@ -1,4 +1,4 @@
-# lua-memcache
+# lua-memcached
 Lua binding for [libmemcached](http://libmemcached.org/).
 
 ## Example
