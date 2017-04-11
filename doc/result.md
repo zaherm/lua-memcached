@@ -1,4 +1,4 @@
-### result
+### memcached
 
 ### result:key()
 Get the key value of the result
