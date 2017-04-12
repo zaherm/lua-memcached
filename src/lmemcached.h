@@ -6,6 +6,7 @@
 #include "lmemcached_aux.h"
 #include "lmemcached_consts.h"
 #include "lmemcached_result.h"
+#include "lmemcached_server.h"
 
 #define LMEMCACHED_VERSION "lua-memcached 0.0.1"
 #define LMEMCACHED_COPYRIGHT "Copyright (c) 2017, Zaher Marzuq"
@@ -66,6 +67,14 @@ LUALIB_API int lmemcached_behavior_set(lua_State *L);
 /* hash */
 LUALIB_API int lmemcached_generate_hash(lua_State *L);
 LUALIB_API int lmemcached_generate_hash_value(lua_State *L);
+/* server */
+LUALIB_API int lmemcached_server_count(lua_State *L);
+LUALIB_API int lmemcached_server_add(lua_State *L);
+LUALIB_API int lmemcached_server_add_udp(lua_State *L);
+LUALIB_API int lmemcached_server_add_unix_socket(lua_State *L);
+LUALIB_API int lmemcached_server_push(lua_State *L);
+LUALIB_API int lmemcached_server_by_key(lua_State *L);
+LUALIB_API int lmemcached_server_get_last_disconnect(lua_State *L);
 /* general */
 LUALIB_API int lmemcached_lib_version(lua_State *L);
 LUALIB_API int lmemcached_check_configuration(lua_State *L);
@@ -116,6 +125,11 @@ static luaL_Reg lmemcached_methods[] = {
   { "behavior_get", lmemcached_behavior_get },
   { "behavior_set", lmemcached_behavior_set },
   { "generate_hash", lmemcached_generate_hash },
+  { "server_count", lmemcached_server_count },
+  { "server_add", lmemcached_server_add },
+  { "server_add_udp", lmemcached_server_add_udp },
+  { "server_add_unix_socket", lmemcached_server_add_unix_socket },
+  { "server_by_key", lmemcached_server_by_key },
   { "__gc", lmemcached_free },
   { "__index", lmemcached_index },
   { NULL, NULL }

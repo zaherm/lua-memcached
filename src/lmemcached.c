@@ -871,6 +871,107 @@ LUALIB_API int lmemcached_generate_hash_value(lua_State *L) {
   return 1;
 }
 
+/* server */
+/***
+ * @function memcached:server_count()
+ * @desc Get the number of current servers used in memcached instance.
+ * @return count[integer]
+ * @ref http://docs.libmemcached.org/memcached_servers.html#memcached_server_count
+*/
+LUALIB_API int lmemcached_server_count(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  uint32_t count = memcached_server_count(self->ptr);
+  lua_pushinteger(L, count);
+  return 1;
+}
+
+/***
+ * @function memcached:server_add(host, port)
+ * @desc Add a server
+ * @param host[string]
+ * @param port[integer]
+ * @return ok[booelan] - status
+ * @return rc[integer] - return code
+ * @ref http://docs.libmemcached.org/memcached_servers.html#memcached_server_add
+*/
+LUALIB_API int lmemcached_server_add(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  const char *host = luaL_checkstring(L, 2);
+  in_port_t port = luaL_checkinteger(L, 3);
+  memcached_return_t rc = memcached_server_add(self->ptr, host, port);
+  lmemcached_pushrc(L, rc);
+  return 2;
+}
+
+/***
+ * @function memcached:server_add_udp(host, port)
+ * @desc Add a UDP server
+ * @param host[string]
+ * @param port[integer]
+ * @return ok[booelan] - status
+ * @return rc[integer] - return code
+ * @ref http://docs.libmemcached.org/memcached_servers.html#memcached_server_add_udp
+*/
+LUALIB_API int lmemcached_server_add_udp(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  const char *host = luaL_checkstring(L, 2);
+  in_port_t port = luaL_checkinteger(L, 3);
+  memcached_return_t rc = memcached_server_add_udp(self->ptr, host, port);
+  lmemcached_pushrc(L, rc);
+  return 2;
+}
+
+/***
+ * @function memcached:server_add_unix_socket(socket)
+ * @desc Add a unixsocket based server
+ * @param socket[string]
+ * @return ok[booelan] - status
+ * @return rc[integer] - return code
+ * @ref http://docs.libmemcached.org/memcached_servers.html#memcached_server_add_unix_socket
+*/
+LUALIB_API int lmemcached_server_add_unix_socket(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  const char *socket = luaL_checkstring(L, 2);
+  memcached_return_t rc = memcached_server_add_unix_socket(self->ptr, socket);
+  lmemcached_pushrc(L, rc);
+  return 2;
+}
+
+LUALIB_API int lmemcached_server_push(lua_State *L) {
+  //TODO
+  return 0;
+}
+/***
+ * @function memcached:server_by_key()
+ * @desc Get server by key
+ * @return ok[boolean] - result status
+ * @return server[memcached.server] - server object or error code. See [**server**](server.md) for more information.
+ * @ref http://docs.libmemcached.org/memcached_servers.html#memcached_server_by_key
+*/
+LUALIB_API int lmemcached_server_by_key(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  size_t key_length;
+  const char *key = lua_tolstring(L, 2, &key_length);
+  memcached_return_t rc = MEMCACHED_SUCCESS;
+  const memcached_instance_st *st = memcached_server_by_key(self->ptr, key, key_length, &rc);
+  bool brc = memcached_success(rc);
+  lua_pushboolean(L, brc);
+  if(brc) {
+    lmemcached_server *s = (lmemcached_server *) lua_newuserdata(L, sizeof(lmemcached_server));
+    s->ptr = st;
+    lmemcached_setmeta(L, LMEMCACHED_SERVER_MT);
+  }
+  else {
+    lua_pushinteger(L, rc);
+  }
+
+  return 2;
+}
+
+LUALIB_API int lmemcached_server_get_last_disconnect(lua_State *L) {
+  //TODO
+  return 0;
+}
 
 /***
  * @function memcached.lib_version()
@@ -919,6 +1020,7 @@ LUALIB_API int luaopen_memcached(lua_State *L) {
   lmemcached_createmeta(L, LMEMCACHED_MT, lmemcached_methods);
   lmemcached_result_open(L);
   lmemcached_consts_open(L);
+  lmemcached_server_open(L);
   lua_pushliteral(L, LMEMCACHED_VERSION);
   lua_setfield(L, -2, "_VERSION");
   lua_pushliteral(L, LMEMCACHED_COPYRIGHT);

@@ -225,6 +225,19 @@ spec:describe("memcached:generate_hash(), memcached:generate_hash_value()", func
   assert(res == 1187193781)
 end)
 
+spec:describe("memcached:server_* functions", function(report)
+  local memc = memcached.new(option_string)
+  local ok, res
+  report("server_count == 1", memc:server_count() == 1)
+  ok, res = memc:server_add("localhost", 11211)
+  report("server_add", ok)
+  ok, res = memc:server_add_udp("localhost", 11211)
+  report("server_add_udp", not ok)
+  ok, res = memc:server_add_unix_socket("/tmp/memcached.sock")
+  print(ok, memc:strerror(res))
+end)
+
+
 spec:run()
 
 
