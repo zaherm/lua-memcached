@@ -120,7 +120,7 @@ LUALIB_API int lmemcached_increment(lua_State *L) {
   const char *key = luaL_checklstring(L, 2, &key_length);
   uint32_t offset = (uint32_t) luaL_checknumber(L, 3);
   uint64_t value;
-  memcached_return_t rc;
+  memcached_return_t rc = MEMCACHED_SUCCESS;
   int nargs = lua_gettop(L);
   lmemcached_assert(L, (nargs == 3 || nargs == 5), "unexpected number of arguments");
   if(nargs == 3) {
@@ -131,9 +131,7 @@ LUALIB_API int lmemcached_increment(lua_State *L) {
     time_t expiration = (time_t) luaL_checknumber(L, 5);
     rc = memcached_increment_with_initial(self->ptr, key, key_length, offset, initial, expiration, &value);
   }
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, brc ? value : rc);
+  lmemcached_pushinteger(L, rc, value);
   return 2;
 }
 
@@ -153,7 +151,7 @@ LUALIB_API int lmemcached_decrement(lua_State *L) {
   const char *key = luaL_checklstring(L, 2, &key_length);
   uint32_t offset = (uint32_t) luaL_checknumber(L, 3);
   uint64_t value;
-  memcached_return_t rc;
+  memcached_return_t rc = MEMCACHED_SUCCESS;
   int nargs = lua_gettop(L);
   lmemcached_assert(L, (nargs == 3 || nargs == 5), "unexpected number of arguments");
   if(nargs == 3) {
@@ -165,9 +163,7 @@ LUALIB_API int lmemcached_decrement(lua_State *L) {
     rc = memcached_decrement_with_initial(self->ptr, key, key_length, offset, initial, expiration, &value);
   }
 
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, brc ? value : rc);
+  lmemcached_pushinteger(L, rc, value);
   return 2;
 }
 
@@ -189,7 +185,7 @@ LUALIB_API int lmemcached_increment_by_key(lua_State *L) {
   const char *key = luaL_checklstring(L, 3, &key_length);
   uint32_t offset = (uint32_t) luaL_checknumber(L, 4);
   uint64_t value;
-  memcached_return_t rc;
+  memcached_return_t rc = MEMCACHED_SUCCESS;
   int nargs = lua_gettop(L);
   lmemcached_assert(L, (nargs == 4 || nargs == 6), "unexpected number of arguments");
   if(nargs == 4) {
@@ -200,9 +196,7 @@ LUALIB_API int lmemcached_increment_by_key(lua_State *L) {
     time_t expiration = (time_t) luaL_checknumber(L, 6);
     rc = memcached_increment_with_initial_by_key(self->ptr, group_key, group_key_length, key, key_length, offset, initial, expiration, &value);
   }
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, brc ? value : rc);
+  lmemcached_pushinteger(L, rc, value);
   return 2;
 }
 
@@ -224,7 +218,7 @@ LUALIB_API int lmemcached_decrement_by_key(lua_State *L) {
   const char *key = luaL_checklstring(L, 3, &key_length);
   uint32_t offset = (uint32_t) luaL_checknumber(L, 4);
   uint64_t value;
-  memcached_return_t rc;
+  memcached_return_t rc = MEMCACHED_SUCCESS;
   int nargs = lua_gettop(L);
   lmemcached_assert(L, (nargs == 4 || nargs == 6), "unexpected number of arguments");
   if(nargs == 4) {
@@ -235,9 +229,7 @@ LUALIB_API int lmemcached_decrement_by_key(lua_State *L) {
     time_t expiration = (time_t) luaL_checknumber(L, 6);
     rc = memcached_decrement_with_initial_by_key(self->ptr, group_key, group_key_length, key, key_length, offset, initial, expiration, &value);
   }
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, brc ? value : rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -256,9 +248,7 @@ LUALIB_API int lmemcached_delete(lua_State *L) {
   const char *key = luaL_checklstring(L, 2, &key_length);
   time_t expiration = (time_t) luaL_checknumber(L, 3);
   memcached_return_t rc = memcached_delete(self->ptr, key, key_length, expiration);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -279,9 +269,7 @@ LUALIB_API int lmemcached_delete_by_key(lua_State *L) {
   const char *key = luaL_checklstring(L, 3, &key_length);
   time_t expiration = (time_t) luaL_checknumber(L, 4);
   memcached_return_t rc = memcached_delete_by_key(self->ptr, group_key, group_key_length, key, key_length, expiration);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -298,9 +286,7 @@ LUALIB_API int lmemcached_exist(lua_State *L) {
   size_t key_length;
   const char *key = luaL_checklstring(L, 2, &key_length);
   memcached_return_t rc = memcached_exist(self->ptr, key, key_length);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -319,9 +305,7 @@ LUALIB_API int lmemcached_exist_by_key(lua_State *L) {
   const char *group_key = luaL_checklstring(L, 2, &group_key_length);
   const char *key = luaL_checklstring(L, 3, &key_length);
   memcached_return_t rc = memcached_exist_by_key(self->ptr, group_key, group_key_length, key, key_length);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -335,9 +319,7 @@ LUALIB_API int lmemcached_exist_by_key(lua_State *L) {
 LUALIB_API int lmemcached_flush_buffers(lua_State *L) {
   lmemcached *self = lmemcached_check(L, 1);
   memcached_return_t rc = memcached_flush_buffers(self->ptr);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -353,9 +335,7 @@ LUALIB_API int lmemcached_flush(lua_State *L) {
   lmemcached *self = lmemcached_check(L, 1);
   time_t expiration = (time_t) luaL_checkinteger(L, 2);
   memcached_return_t rc = memcached_flush(self->ptr, expiration);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -442,9 +422,7 @@ LUALIB_API int lmemcached_mget(lua_State *L) {
     keys[i] = lua_tolstring(L, i + 2, &keys_length[i]);
   }
   rc = memcached_mget(self->ptr, keys, keys_length, number_of_keys);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -471,9 +449,7 @@ LUALIB_API int lmemcached_mget_by_key(lua_State *L) {
     keys[i] = lua_tolstring(L, i + 3, &keys_length[i]);
   }
   rc = memcached_mget_by_key(self->ptr, group_key, group_key_length, keys, keys_length, number_of_keys);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -526,9 +502,7 @@ LUALIB_API int lmemcached_set(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 4, 0);
   uint32_t flags = luaL_optinteger(L, 5, 0);
   memcached_return_t rc = memcached_set(self->ptr, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -553,9 +527,7 @@ LUALIB_API int lmemcached_set_by_key(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 5, 0);
   uint32_t flags = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_set_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -579,9 +551,7 @@ LUALIB_API int lmemcached_add(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 4, 0);
   uint32_t flags = luaL_optinteger(L, 5, 0);
   memcached_return_t rc = memcached_add(self->ptr, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -606,9 +576,7 @@ LUALIB_API int lmemcached_add_by_key(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 5, 0);
   uint32_t flags = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_add_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -631,9 +599,7 @@ LUALIB_API int lmemcached_replace(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 4, 0);
   uint32_t flags = luaL_optinteger(L, 5, 0);
   memcached_return_t rc = memcached_replace(self->ptr, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -658,9 +624,7 @@ LUALIB_API int lmemcached_replace_by_key(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 5, 0);
   uint32_t flags = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_replace_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -685,9 +649,7 @@ LUALIB_API int lmemcached_prepend(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 4, 0);
   uint32_t flags = luaL_optinteger(L, 5, 0);
   memcached_return_t rc = memcached_prepend(self->ptr, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -712,9 +674,7 @@ LUALIB_API int lmemcached_prepend_by_key(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 5, 0);
   uint32_t flags = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_prepend_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -737,9 +697,7 @@ LUALIB_API int lmemcached_append(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 4, 0);
   uint32_t flags = luaL_optinteger(L, 5, 0);
   memcached_return_t rc = memcached_append(self->ptr, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -764,9 +722,7 @@ LUALIB_API int lmemcached_append_by_key(lua_State *L) {
   time_t expiration = (time_t) luaL_optinteger(L, 5, 0);
   uint32_t flags = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_append_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -793,9 +749,7 @@ LUALIB_API int lmemcached_cas(lua_State *L) {
   uint32_t flags = luaL_optinteger(L, 5, 0);
   uint64_t cas = luaL_optinteger(L, 6, 0);
   memcached_return_t rc = memcached_cas(self->ptr, key, key_length, value, value_length, expiration, flags, cas);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -822,9 +776,7 @@ LUALIB_API int lmemcached_cas_by_key(lua_State *L) {
   uint32_t flags = luaL_optinteger(L, 6, 0);
   uint64_t cas = luaL_optinteger(L, 7, 0);
   memcached_return_t rc = memcached_cas_by_key(self->ptr, group_key, group_key_length, key, key_length, value, value_length, expiration, flags, cas);
-  bool brc = memcached_success(rc);
-  lua_pushboolean(L, brc);
-  lua_pushinteger(L, rc);
+  lmemcached_pushrc(L, rc);
   return 2;
 }
 
@@ -882,9 +834,8 @@ LUALIB_API int lmemcached_behavior_set(lua_State *L) {
   memcached_behavior_t flag = luaL_checkinteger(L, 2);
   uint64_t data = luaL_checkinteger(L, 3);
   memcached_return_t rc = memcached_behavior_set(self->ptr, flag, data);
-  lua_pushboolean(L, memcached_success(rc));
-  lua_pushinteger(L, rc);
-  return 1;
+  lmemcached_pushrc(L, rc);
+  return 2;
 }
 
 /***

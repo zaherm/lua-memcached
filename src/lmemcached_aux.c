@@ -39,3 +39,14 @@ void lmemcached_assert(lua_State *L, int cond, const char *msg)  {
   }
 }
 
+void lmemcached_pushinteger(lua_State *L, memcached_return_t rc, uint64_t value) {
+  bool brc = memcached_success(rc);
+  lua_pushboolean(L, brc);
+  lua_pushinteger(L, brc ? value : rc);
+}
+
+void lmemcached_pushrc(lua_State *L, memcached_return_t rc) {
+  bool brc = memcached_success(rc);
+  lua_pushboolean(L, brc);
+  lua_pushinteger(L, rc);
+}
