@@ -12,4 +12,4 @@ end
 for k,v in pairs(memcached.HASH) do
   assert(k, v)
 end
-
+assert(memcached.SUCCESS == 0)

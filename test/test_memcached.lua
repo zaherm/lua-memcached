@@ -213,6 +213,7 @@ spec:describe("memcached:behavior_get(), memcached:behavior_set()", function(rep
   local ok, res, data
   ok, res = memc:behavior_set(memcached.BEHAVIOR.SND_TIMEOUT, 10)
   assert(ok)
+  assert(res == memcached.SUCCESS)
   data = memc:behavior_get(memcached.BEHAVIOR.SND_TIMEOUT)
   assert(data == 10)
 end)
