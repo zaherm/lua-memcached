@@ -17,7 +17,11 @@ LUALIB_API int lmemcached_server_index(lua_State *L) {
   return 0;
 }
 
-
+/***
+ * @function server:response_count()
+ * @desc Get total response count from the server instance.
+ * @return count[integer]
+*/
 LUALIB_API int lmemcached_server_response_count(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   uint32_t response_count = memcached_server_response_count(self->ptr);
@@ -25,6 +29,11 @@ LUALIB_API int lmemcached_server_response_count(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function server:port()
+ * @desc Get the server port.
+ * @return port[integer]
+*/
 LUALIB_API int lmemcached_server_port(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   in_port_t port = memcached_server_port(self->ptr);
@@ -32,6 +41,11 @@ LUALIB_API int lmemcached_server_port(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function server:srcport()
+ * @desc Get the source port.
+ * @return port[integer]
+*/
 LUALIB_API int lmemcached_server_srcport(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   in_port_t port = memcached_server_srcport(self->ptr);
@@ -39,6 +53,11 @@ LUALIB_API int lmemcached_server_srcport(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function server:type()
+ * @desc Get the server type - UDP, TCP, UNIX_SOCKET.
+ * @return port[integer]
+*/
 LUALIB_API int lmemcached_server_type(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   const char *type = memcached_server_type(self->ptr);
@@ -46,6 +65,11 @@ LUALIB_API int lmemcached_server_type(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function server:major_version()
+ * @desc Get the server major version.
+ * @return major_version[integer]
+*/
 LUALIB_API int lmemcached_server_major_version(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   uint8_t version = memcached_server_major_version(self->ptr);
@@ -53,7 +77,11 @@ LUALIB_API int lmemcached_server_major_version(lua_State *L) {
   return 1;
 }
 
-
+/***
+ * @function server:minor_version()
+ * @desc Get the server minor version.
+ * @return minor_version[integer]
+*/
 LUALIB_API int lmemcached_server_minor_version(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   uint8_t version = memcached_server_minor_version(self->ptr);
@@ -61,13 +89,17 @@ LUALIB_API int lmemcached_server_minor_version(lua_State *L) {
   return 1;
 }
 
+/***
+ * @function server:micro_version()
+ * @desc Get the server micro version.
+ * @return micro_version[integer]
+*/
 LUALIB_API int lmemcached_server_micro_version(lua_State *L) {
   lmemcached_server *self = lmemcached_server_check(L, 1);
   uint8_t version = memcached_server_micro_version(self->ptr);
   lua_pushinteger(L, version);
   return 1;
 }
-
 
 static luaL_Reg lmemcached_server_methods[] = {
   { "response_count", lmemcached_server_response_count },
