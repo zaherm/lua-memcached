@@ -234,8 +234,20 @@ spec:describe("memcached:server_* functions", function(report)
   ok, res = memc:server_add_udp("localhost", 11211)
   report("server_add_udp", not ok)
   ok, res = memc:server_add_unix_socket("/tmp/memcached.sock")
-  print(ok, memc:strerror(res))
+  assert(ok)
 end)
+
+spec:describe("memcached:touch functions", function(report)
+  local memc = memcached.new(option_string)
+  local ok, res
+  ok, res = memc:set("touch_test", "vvvv")
+  assert(ok)
+  ok, res = memc:touch("touch_test", os.time() + 10)
+  assert(ok)
+  ok, res = memc:touch_by_key("touch_group", "touch_test", os.time() + 10)
+  assert(ok)
+end)
+
 
 
 spec:run()

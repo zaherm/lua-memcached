@@ -973,6 +973,47 @@ LUALIB_API int lmemcached_server_get_last_disconnect(lua_State *L) {
   return 0;
 }
 
+/* touch */
+/***
+ * @function memcached:touch(key, expiration)
+ * @desc Update key expiration timestamp.
+ * @param key[string]
+ * @param expiration[timestamp]
+ * @return ok[boolean] - result status
+ * @return rc[integer] - return code
+ * @ref http://docs.libmemcached.org/memcached_touch.html#memcached_touch
+*/
+LUALIB_API int lmemcached_touch(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  size_t key_length;
+  const char *key = lua_tolstring(L, 2, &key_length);
+  time_t expiration = (time_t) luaL_checkinteger(L, 3);
+  memcached_return_t rc = memcached_touch(self->ptr, key, key_length, expiration);
+  lmemcached_pushrc(L, rc);
+  return 2;
+}
+
+/***
+ * @function memcached:touch_by_key(group_key, key, expiration)
+ * @desc Update key expiration by group_key.
+ * @param group_key[string]
+ * @param key[string]
+ * @param expiration[timestamp]
+ * @return ok[boolean] - result status
+ * @return rc[integer] - return code
+ * @ref http://docs.libmemcached.org/memcached_touch.html#memcached_touch_by_key
+*/
+LUALIB_API int lmemcached_touch_by_key(lua_State *L) {
+  lmemcached *self = lmemcached_check(L, 1);
+  size_t group_key_length, key_length;
+  const char *group_key = lua_tolstring(L, 2, &group_key_length);
+  const char *key = lua_tolstring(L, 3, &key_length);
+  time_t expiration = (time_t) luaL_checkinteger(L, 4);
+  memcached_return_t rc = memcached_touch_by_key(self->ptr, group_key, group_key_length, key, key_length, expiration);
+  lmemcached_pushrc(L, rc);
+  return 2;
+}
+
 /***
  * @function memcached.lib_version()
  * @desc Returns the libmemcached version.

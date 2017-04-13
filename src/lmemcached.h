@@ -75,6 +75,10 @@ LUALIB_API int lmemcached_server_add_unix_socket(lua_State *L);
 LUALIB_API int lmemcached_server_push(lua_State *L);
 LUALIB_API int lmemcached_server_by_key(lua_State *L);
 LUALIB_API int lmemcached_server_get_last_disconnect(lua_State *L);
+/* touch */
+LUALIB_API int lmemcached_touch(lua_State *L);
+LUALIB_API int lmemcached_touch_by_key(lua_State *L);
+
 /* general */
 LUALIB_API int lmemcached_lib_version(lua_State *L);
 LUALIB_API int lmemcached_check_configuration(lua_State *L);
@@ -130,6 +134,8 @@ static luaL_Reg lmemcached_methods[] = {
   { "server_add_udp", lmemcached_server_add_udp },
   { "server_add_unix_socket", lmemcached_server_add_unix_socket },
   { "server_by_key", lmemcached_server_by_key },
+  { "touch", lmemcached_touch },
+  { "touch_by_key", lmemcached_touch_by_key },
   { "__gc", lmemcached_free },
   { "__index", lmemcached_index },
   { NULL, NULL }

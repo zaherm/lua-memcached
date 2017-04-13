@@ -468,6 +468,88 @@ Returns:
 
 Reference http://docs.libmemcached.org/memcached_hash.html#memcached_generate_hash_value
 
+### memcached:server_count()
+Get the number of current servers used in memcached instance.
+
+Returns:
+* count[integer]
+
+Reference http://docs.libmemcached.org/memcached_servers.html#memcached_server_count
+
+### memcached:server_add(host, port)
+Add a server
+
+Params:
+* host[string]
+* port[integer]
+
+Returns:
+* ok[booelan] - status
+* rc[integer] - return code
+
+Reference http://docs.libmemcached.org/memcached_servers.html#memcached_server_add
+
+### memcached:server_add_udp(host, port)
+Add a UDP server
+
+Params:
+* host[string]
+* port[integer]
+
+Returns:
+* ok[booelan] - status
+* rc[integer] - return code
+
+Reference http://docs.libmemcached.org/memcached_servers.html#memcached_server_add_udp
+
+### memcached:server_add_unix_socket(socket)
+Add a unixsocket based server
+
+Params:
+* socket[string]
+
+Returns:
+* ok[booelan] - status
+* rc[integer] - return code
+
+Reference http://docs.libmemcached.org/memcached_servers.html#memcached_server_add_unix_socket
+
+### memcached:server_by_key()
+Get server by key
+
+Returns:
+* ok[boolean] - result status
+* server[memcached.server] - server object or error code. See [**server**](server.md) for more information.
+
+Reference http://docs.libmemcached.org/memcached_servers.html#memcached_server_by_key
+
+### memcached:touch(key, expiration)
+Update key expiration timestamp.
+
+Params:
+* key[string]
+* expiration[timestamp]
+
+Returns:
+* ok[boolean] - result status
+* rc[integer] - return code
+
+Reference http://docs.libmemcached.org/memcached_touch.html#memcached_touch
+
+### memcached:touch_by_key(group_key, key, expiration)
+Update key expiration by group_key.
+
+Params:
+* group_key[string]
+* key[string]
+* expiration[timestamp]
+
+Returns:
+* ok[boolean] - result status
+* rc[integer] - return code
+
+Reference http://docs.libmemcached.org/memcached_touch.html#memcached_touch_by_key
+
 ### memcached.lib_version()
 Returns the libmemcached version.
 
